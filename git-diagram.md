@@ -1,3 +1,8 @@
+# Test Mermaid
+
+...tests
+
+```mermaid
 graph TB
     subgraph "Developer Workspace"
         DEV[Developer]
@@ -89,3 +94,4 @@ graph TB
     class ARGOCD,SYNC,DIFF gitopsClass
     class K8S_API,DEPLOY,SVC,PODS,INGRESS k8sClass
     class MONITOR,ALERT,LOGS obsClass
+```
