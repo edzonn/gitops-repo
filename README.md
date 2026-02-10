@@ -11,68 +11,6 @@ GitOps is a operational framework that applies DevOps best practices (version co
 3. **Automated Delivery**: Changes are automatically applied when committed
 4. **Continuous Reconciliation**: Agents ensure actual state matches desired state
 
-## GitOps Process Flow
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                          GitOps Workflow                             │
-└─────────────────────────────────────────────────────────────────────┘
-
-    Developer                Git Repository              Cluster
-       │                           │                         │
-       │  1. Code Change           │                         │
-       │ ─────────────────────────>│                         │
-       │                           │                         │
-       │  2. Pull Request          │                         │
-       │ <─────────────────────────│                         │
-       │                           │                         │
-       │  3. Review & Merge        │                         │
-       │ ─────────────────────────>│                         │
-       │                           │                         │
-       │                           │  4. Detect Change       │
-       │                           │<────────────────────────│
-       │                           │   (GitOps Agent)        │
-       │                           │                         │
-       │                           │  5. Pull Config         │
-       │                           │ ───────────────────────>│
-       │                           │                         │
-       │                           │  6. Apply & Reconcile   │
-       │                           │                         │
-       │                           │  7. Sync Status         │
-       │                           │<────────────────────────│
-       │                           │                         │
-```
-
-## Detailed Architecture
-
-```
-┌──────────────────────────────────────────────────────────────────────────┐
-│                         GitOps Architecture                               │
-└──────────────────────────────────────────────────────────────────────────┘
-
-┌─────────────────┐         ┌──────────────────┐         ┌───────────────┐
-│   Developers    │         │   Git Repository │         │   Kubernetes  │
-│                 │         │                  │         │    Cluster    │
-│  - Write Code   │────────>│  - Manifests     │<────────│               │
-│  - Create PRs   │         │  - Helm Charts   │         │  ┌─────────┐  │
-│  - Review       │         │  - Kustomize     │         │  │ ArgoCD  │  │
-└─────────────────┘         │  - Configs       │         │  │   or    │  │
-                            │                  │         │  │  Flux   │  │
-┌─────────────────┐         └──────────────────┘         │  └─────────┘  │
-│   CI Pipeline   │                  │                   │       │        │
-│                 │                  │                   │       │        │
-│  - Build        │                  │                   │   Monitors     │
-│  - Test         │──────────────────┘                   │   & Syncs      │
-│  - Push Images  │                                      │       │        │
-│  - Update Git   │                                      │       ↓        │
-└─────────────────┘                                      │  ┌─────────┐  │
-                                                         │  │  Apps   │  │
-┌─────────────────┐         ┌──────────────────┐        │  │Services │  │
-│  Monitoring     │<────────│  Observability   │<───────│  │ Infra   │  │
-│  & Alerting     │         │   Platform       │        │  └─────────┘  │
-└─────────────────┘         └──────────────────┘        └───────────────┘
-```
-
 ## Repository Structure
 
 ### Option 1: Monorepo Structure
