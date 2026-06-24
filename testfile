@@ -1,12 +1,48 @@
 #!/bin/bash
 
-echo "TargetGroup,AttachedLoadBalancer" > tg-report.csv
+echo "TargetGroup,LoadBalancer,RequestCount30Days,Recommendation" > tg-report.csv
+
+START_TIME=$(date -u -d "30 days ago" +"%Y-%m-%dT%H:%M:%SZ")
+END_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 aws elbv2 describe-target-groups \
-  --query 'TargetGroups[*].[TargetGroupName,LoadBalancerArns[0]]' \
-  --output text | while read tg lb
+--query 'TargetGroups[*].[TargetGroupName,TargetGroupArn,LoadBalancerArns[0]]' \
+--output text | while read TG_NAME TG_ARN LB_ARN
 do
-    echo "$tg,$lb" >> tg-report.csv
+
+    # Skip if not attached to a load balancer
+    if [ "$LB_ARN" == "None" ]; then
+        echo "$TG_NAME,None,0,Candidate for deletion" >> tg-report.csv
+        continue
+    fi
+
+    # Extract CloudWatch dimension values
+    TG_DIM=$(echo $TG_ARN | cut -d: -f6)
+    LB_DIM=$(echo $LB_ARN | cut -d: -f6)
+
+    REQUESTS=$(aws cloudwatch get-metric-statistics \
+        --namespace AWS/ApplicationELB \
+        --metric-name RequestCount \
+        --dimensions \
+            Name=TargetGroup,Value=$TG_DIM \
+            Name=LoadBalancer,Value=$LB_DIM \
+        --start-time $START_TIME \
+        --end-time $END_TIME \
+        --period 2592000 \
+        --statistics Sum \
+        --query 'Datapoints[0].Sum' \
+        --output text 2>/dev/null)
+
+    [ "$REQUESTS" == "None" ] && REQUESTS=0
+
+    if [ "$REQUESTS" -eq 0 ]; then
+        STATUS="Candidate for deletion"
+    else
+        STATUS="Active"
+    fi
+
+    echo "$TG_NAME,$LB_DIM,$REQUESTS,$STATUS" >> tg-report.csv
+
 done
 
-echo "Report saved to tg-report.csv"
+echo "Report generated: tg-report.csv"
