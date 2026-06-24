@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "TargetGroup,AttachedLoadBalancer" > tg-report.csv
+
+aws elbv2 describe-target-groups \
+  --query 'TargetGroups[*].[TargetGroupName,LoadBalancerArns[0]]' \
+  --output text | while read tg lb
+do
+    echo "$tg,$lb" >> tg-report.csv
+done
+
+echo "Report saved to tg-report.csv"
