@@ -1,4 +1,5 @@
 #!/bin/bash
+# https://dev.to/aws-builders/how-to-encrypt-an-unencrypted-rds-db-instance-262g -> rds encryption
 
 echo "TargetGroup,LoadBalancer,RequestCount30Days,Recommendation" > tg-report.csv
 
