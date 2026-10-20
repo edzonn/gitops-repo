@@ -1,0 +1,20 @@
+* AWS resource connectivity
+* AWS S3 to Azure Blob Storage migration
+* AWS Console or AWS CLI access
+* Application and API connectivity
+* Database connectivity and migration
+* Troubleshooting network connectivity issues
+* Access to external repositories and services
+* CI/CD pipeline execution
+* Software deployment and dependency downloads
+* AWS service integration with external systems
+* Cloud resource monitoring and management
+* Data transfer between cloud environments
+* RDS encryption testing and validation
+* Access to required third-party services
+* Production incident investigation and resolution
+* IP whitelisting for VPN or corporate network access
+* Connectivity between AWS VPCs and on-premises networks
+* Replication and synchronization between systems
+* Security testing and vulnerability assessment
+* Temporary firewall access for planned maintenance
