@@ -10,3 +10,14 @@ Please see the CVE details we received below.
 As a proposed action, we recommend upgrading MySQL to the latest available version to address the vulnerability. However, we will first prepare a detailed work plan outlining the upgrade process, including the necessary activities and considerations, before proceeding.
 
 We will keep you updated on the next steps.
+
+
+
+=====
+We would like to inform you that we have received a CVE notification regarding MySQL Server. Upon checking, our current MySQL version (8.4.9) is among the affected versions, and the advisory indicates that all versions are impacted.
+
+However, we have confirmed that all our databases are not publicly accessible.
+
+As a proposed action, we recommend upgrading MySQL to the latest version. We will prepare a work plan first to outline the upgrade process and necessary activities before proceeding.
+
+Please see the CVE details below.
